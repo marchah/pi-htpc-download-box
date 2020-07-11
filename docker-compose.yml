@@ -152,6 +152,7 @@ services:
       - /etc:/dockerhost/etc:ro
       - /proc:/dockerhost/proc:ro
       - /usr/lib:/dockerhost/usr/lib:ro
+      - ${CONFIG}/config/rpimonitor:/etc/rpimonitor # config files
     devices:
       - "/dev/vchiq:/dev/vchiq" 
       - "/dev/vcsm:/dev/vcsm"
