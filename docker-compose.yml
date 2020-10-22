@@ -140,21 +140,50 @@ services:
   #    - ${ROOT}/tv:/data/tvshows # tvshows library
   #    - ${ROOT}/movies:/data/movies # tvshows library
 
-  rpi-monitor:
-    container_name: rpi-monitor
-    image: michaelmiklis/rpi-monitor:latest
+#  rpi-monitor:
+#    container_name: rpi-monitor
+#    image: michaelmiklis/rpi-monitor:latest
+#    restart: unless-stopped
+#    network_mode: host
+#    volumes:
+#      - /opt/vc:/opt/vc
+#      - /boot:/boot
+#      - /sys:/dockerhost/sys:ro
+#      - /etc:/dockerhost/etc:ro
+#      - /proc:/dockerhost/proc:ro
+#      - /usr/lib:/dockerhost/usr/lib:ro
+#      - ${CONFIG}/config/rpimonitor:/etc/rpimonitor # config files
+#    devices:
+#      - /dev/vchiq:/dev/vchiq 
+#      - /dev/vcsm:/dev/vcsm
+#    ports:
+#      - 8888:8888
+
+
+  netdata:
+    container_name: netdata
+    image: netdata/netdata
     restart: unless-stopped
     network_mode: host
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
     volumes:
-      - /opt/vc:/opt/vc
-      - /boot:/boot
-      - /sys:/dockerhost/sys:ro
-      - /etc:/dockerhost/etc:ro
-      - /proc:/dockerhost/proc:ro
-      - /usr/lib:/dockerhost/usr/lib:ro
-      - ${CONFIG}/config/rpimonitor:/etc/rpimonitor # config files
-    devices:
-      - "/dev/vchiq:/dev/vchiq" 
-      - "/dev/vcsm:/dev/vcsm"
+      - /etc/group:/host/etc/group:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/lsb-release:/host/etc/lsb-release:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /etc/passwd:/host/etc/passwd:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${CONFIG}/config/netdata:/etc/netdata # config files
     ports:
-      - 8888:8888
+      - 19999:19999
+    logging:
+      driver: json-file
