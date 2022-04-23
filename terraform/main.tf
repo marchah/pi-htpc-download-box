@@ -1,3 +1,17 @@
+# Install terraform
+# install minikibe
+# `minikube start`
+
+provider "kubernetes" {
+  config_context_cluster   = "minikube"
+}
+
+resource "kubernetes_namespace" "htpc_namespace" {
+  metadata {
+    name = "htpc-namespace"
+  }
+}
+
 /*resource "docker_service" "plex-service" {
   name = "plex-server"
 
