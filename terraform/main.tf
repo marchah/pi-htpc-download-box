@@ -101,7 +101,7 @@ resource "kubernetes_pod" "plex_server" {
         period_seconds        = 3
       }*/
 
-      volume_mount {
+      /*volume_mount {
         name = "/config"
         mount_path = "${var.CONFIG}/config/plex/db"
       }
@@ -119,7 +119,7 @@ resource "kubernetes_pod" "plex_server" {
       volume_mount {
         name = "/data/movies"
         mount_path = "${var.ROOT}/movies"
-      }
+      }*/
     }
 
     /*dns_config {
