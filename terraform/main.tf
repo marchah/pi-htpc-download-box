@@ -142,13 +142,13 @@ resource "kubernetes_pod" "plex_server" {
  // }
 //}
 
-resource "docker_image" "plex-server" {
+resource "docker_image" "plex" {
     name = "linuxserver/plex"
 }
 
-resource "docker_container" "plex-server" {
-    name = "plex-server"
-    image = "${docker_image.plex-server.latest}"
+resource "docker_container" "plex" {
+    name = "plex"
+    image = "${docker_image.plex.latest}"
     hostname = "plex"
     restart = "always"
     must_run = true
