@@ -11,12 +11,8 @@ claimToken: ""
 
 # Set the timezone of the plex server
 timezone: "${timezone}"
-
-metadata:
-  namespace: "${namespace}"
-
-PUID = "${PUID}"
-PGID = "${PGID}"
+PUID: "${PUID}"
+PGID: "${PGID}"
 
 service:
   type: ClusterIP
