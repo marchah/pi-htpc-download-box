@@ -54,21 +54,45 @@ resource "kubernetes_deployment" "plex-server" {
           port {
             container_port = 80
           }
+          
           env {
             name = "PUID"
             value = var.PUID
           }
+
           env {
             name = "PGID"
             value = var.PGID
           }
+
           env {
             name = "TZ"
             value = var.TZ
           }
+
           env {
             name = "VERSION"
             value = "docker"
+          }
+
+          volume_mount {
+            name = "/config"
+            mount_path = "${var.CONFIG}/config/plex/db"
+          }
+
+          volume_mount {
+            name = "/transcode"
+            mount_path = "${var.CONFIG}/config/plex/transcode"
+          }
+
+          volume_mount {
+            name = "/data/tvshows"
+            mount_path = "${var.ROOT}/tv"
+          }
+
+          volume_mount {
+            name = "/data/movies"
+            mount_path = "${var.ROOT}/movies"
           }
         }
       }
