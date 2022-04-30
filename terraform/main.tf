@@ -10,6 +10,10 @@ provider "kubernetes" {
   config_path    = "~/.kube/config"
 }
 
+provider "docker" {
+  host = "unix:///var/run/docker.sock"
+}
+
 resource "kubernetes_namespace" "htpc_namespace" {
   metadata {
     name = "htpc-namespace"
