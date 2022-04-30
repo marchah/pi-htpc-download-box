@@ -1,5 +1,7 @@
+# install brew
 # Install terraform
 # install minikibe
+# install k9s
 # `minikube start`
 
 provider "kubernetes" {
@@ -55,7 +57,7 @@ resource "kubernetes_namespace" "htpc_namespace" {
   }
 }
 */
-    
+/*    
 resource "kubernetes_pod" "plex_server" {
   metadata {
     name = "plex-server"
@@ -85,7 +87,7 @@ resource "kubernetes_pod" "plex_server" {
         name  = "VERSION"
         value = "docker"
       }
-
+*/
       /*liveness_probe {
         http_get {
           path = "/"
@@ -120,7 +122,7 @@ resource "kubernetes_pod" "plex_server" {
         name = "/data/movies"
         mount_path = "${var.ROOT}/movies"
       }*/
-    }
+    //}
 
     /*dns_config {
       nameservers = ["1.1.1.1", "8.8.8.8", "9.9.9.9"]
@@ -137,5 +139,59 @@ resource "kubernetes_pod" "plex_server" {
     }
 
     dns_policy = "None"*/
-  }
+ // }
+//}
+
+resource "docker_image" "plex-server" {
+    name = "linuxserver/plex"
+}
+
+resource "docker_container" "plex-server" {
+    name = "plex-server"
+    image = "${docker_image.plex.latest}"
+    hostname = "plex"
+    restart = "always"
+    must_run = true
+    network_mode = "host"
+    /*ports = {
+        internal = 32400
+        external = 32400
+    }
+    env = [
+        "X_PLEX_TOKEN=${var.plex_token}"
+    ]
+    ports = {
+        internal = 32410
+        external = 32410
+        protocol = "udp"
+    }
+    ports = {
+        internal = 32412
+        external = 32412
+        protocol = "udp"
+    }
+    ports = {
+        internal = 32413
+        external = 32413
+        protocol = "udp"
+    }
+    ports = {
+        internal = 32414
+        external = 32414
+        protocol = "udp"
+    }
+    volumes = {
+        host_path = "/etc/localtime"
+        container_path = "/etc/localtime"
+        read_only = true
+    }
+    volumes = {
+        host_path = "${var.plex_config_dir}"
+        container_path = "/config"
+    }
+    volumes = {
+        host_path = "${var.media_dir}"
+        container_path = "/media"
+    }
+    depends_on = ["docker_container.sonarr", "docker_container.couchpotato"]*/
 }
