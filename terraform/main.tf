@@ -55,10 +55,20 @@ resource "kubernetes_deployment" "plex-server" {
             container_port = 80
           }
           env {
-            PUID=${var.PUID} # default user id, defined in .env
-            PGID=${var.PGID} # default group id, defined in .env
-            TZ=${var.TZ} # timezone, defined in .env
-            VERSION="docker"
+            name = "PUID"
+            value = var.PUID
+          }
+          env {
+            name = "PGID"
+            value = var.PGID
+          }
+          env {
+            name = "TZ"
+            value = var.TZ
+          }
+          env {
+            name = "VERSION"
+            value = "docker"
           }
         }
       }
