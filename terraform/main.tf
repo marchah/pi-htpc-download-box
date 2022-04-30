@@ -19,6 +19,8 @@ resource "kubernetes_namespace" "htpc_namespace" {
 module "production_helm" {
   source     = "./helm"
 
+  depends_on = [kubernetes_namespace.htpc_namespace]
+
   namespace             = kubernetes_namespace.htpc_namespace.id
   timezone              = var.TZ
   configPath            = var.CONFIG
