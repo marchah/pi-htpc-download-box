@@ -111,7 +111,7 @@ persistence:
   extraData:
     []
     # Optionally specifify additional Data mounts.  These will be mounted as
-    # /data-${name}.  This should be in the same format as the above 'data',
+    # /data-{name}.  This should be in the same format as the above 'data',
     # with the additional field 'name'
     # - claimName: "special-tv"
     #   name: 'foo'
