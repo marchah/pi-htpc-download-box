@@ -50,9 +50,15 @@ resource "kubernetes_deployment" "plex-server" {
       spec {
         container {
           image = "linuxserver/plex:latest"
-          name  = "plex-container"
+          name  = "plex-server"
           port {
             container_port = 80
+          }
+          env {
+            PUID=${var.PUID} # default user id, defined in .env
+            PGID=${var.PGID} # default group id, defined in .env
+            TZ=${var.TZ} # timezone, defined in .env
+            VERSION="docker"
           }
         }
       }
