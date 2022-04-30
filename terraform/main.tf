@@ -10,10 +10,6 @@ provider "kubernetes" {
   config_path    = "~/.kube/config"
 }
 
-provider "docker" {
-  host = "unix:///var/run/docker.sock"
-}
-
 resource "kubernetes_namespace" "htpc_namespace" {
   metadata {
     name = "htpc-namespace"
@@ -152,7 +148,7 @@ resource "docker_image" "plex-server" {
 
 resource "docker_container" "plex-server" {
     name = "plex-server"
-    image = "${docker_image.plex.latest}"
+    image = "${docker_image.plex-server.latest}"
     hostname = "plex"
     restart = "always"
     must_run = true
