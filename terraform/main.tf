@@ -19,7 +19,7 @@ resource "kubernetes_namespace" "htpc_namespace" {
 module "production_helm" {
   source     = "./helm"
 
-  namespace             = kubernetes_namespace.htpc_namespace.metadata.name
+  namespace             = kubernetes_namespace.htpc_namespace.id
   timezone              = var.TZ
   configPath            = var.CONFIG
   dataPath              = var.ROOT
