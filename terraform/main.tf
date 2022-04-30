@@ -15,7 +15,7 @@ resource "kubernetes_namespace" "htpc_namespace" {
     name = "htpc-namespace"
   }
 }
-
+/*
 module "production_helm" {
   source     = "./helm"
 
@@ -27,8 +27,55 @@ module "production_helm" {
   dataPath              = var.ROOT
   PUID                  = var.PUID
   PGID                  = var.PGID
-}
+}*/
 
+resource "kubernetes_deployment" "plex-server" {
+  metadata {
+    name      = "plex-server"
+    namespace = kubernetes_namespace.htpc_namespace.metadata.0.name
+  }
+  spec {
+    replicas = 1
+    selector {
+      match_labels = {
+        app = "plex-server"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          app = "plex-server"
+        }
+      }
+      spec {
+        container {
+          image = "linuxserver/plex:latest"
+          name  = "plex-container"
+          port {
+            container_port = 80
+          }
+        }
+      }
+    }
+  }
+}
+resource "kubernetes_service" "plex-server" {
+  metadata {
+    name      = "plex-server"
+    namespace = kubernetes_namespace.htpc_namespace.metadata.0.name
+  }
+  spec {
+    selector = {
+      app = kubernetes_deployment.plex-server.spec.0.template.0.metadata.0.labels.app
+    }
+    type = "NodePort"
+    port {
+      node_port   = 30201
+      port        = 80
+      target_port = 80
+    }
+  }
+}
 
 /*resource "docker_service" "plex-service" {
   name = "plex-server"
