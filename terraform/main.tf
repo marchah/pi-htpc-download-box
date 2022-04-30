@@ -16,6 +16,18 @@ resource "kubernetes_namespace" "htpc_namespace" {
   }
 }
 
+module "production_helm" {
+  source     = "./helm"
+
+  namespace             = kubernetes_namespace.htpc_namespace.metadata.name
+  timezone              = var.TZ
+  configPath            = var.CONFIG
+  dataPath              = var.ROOT
+  PUID                  = var.PUID
+  PGID                  = var.PGID
+}
+
+
 /*resource "docker_service" "plex-service" {
   name = "plex-server"
 
@@ -139,59 +151,5 @@ resource "kubernetes_pod" "plex_server" {
     }
 
     dns_policy = "None"*/
- // }
+//  }
 //}
-
-resource "docker_image" "plex" {
-    name = "linuxserver/plex"
-}
-
-resource "docker_container" "plex" {
-    name = "plex"
-    image = "${docker_image.plex.latest}"
-    hostname = "plex"
-    restart = "always"
-    must_run = true
-    network_mode = "host"
-    /*ports = {
-        internal = 32400
-        external = 32400
-    }
-    env = [
-        "X_PLEX_TOKEN=${var.plex_token}"
-    ]
-    ports = {
-        internal = 32410
-        external = 32410
-        protocol = "udp"
-    }
-    ports = {
-        internal = 32412
-        external = 32412
-        protocol = "udp"
-    }
-    ports = {
-        internal = 32413
-        external = 32413
-        protocol = "udp"
-    }
-    ports = {
-        internal = 32414
-        external = 32414
-        protocol = "udp"
-    }
-    volumes = {
-        host_path = "/etc/localtime"
-        container_path = "/etc/localtime"
-        read_only = true
-    }
-    volumes = {
-        host_path = "${var.plex_config_dir}"
-        container_path = "/config"
-    }
-    volumes = {
-        host_path = "${var.media_dir}"
-        container_path = "/media"
-    }
-    depends_on = ["docker_container.sonarr", "docker_container.couchpotato"]*/
-}
