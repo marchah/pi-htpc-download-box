@@ -9,12 +9,12 @@ provider "kubernetes" {
   #config_context = "minikube"
   config_path    = "~/.kube/config"
 }
-
+/*
 resource "kubernetes_namespace" "htpc_namespace" {
   metadata {
     name = "htpc-namespace"
   }
-}
+}*/
 /*
 module "production_helm" {
   source     = "./helm"
@@ -32,7 +32,7 @@ module "production_helm" {
 resource "kubernetes_deployment" "plex-server" {
   metadata {
     name      = "plex-server"
-    namespace = kubernetes_namespace.htpc_namespace.metadata.0.name
+    //namespace = kubernetes_namespace.htpc_namespace.metadata.0.name
   }
   spec {
     replicas = 1
@@ -95,10 +95,17 @@ resource "kubernetes_deployment" "plex-server" {
             name = "${var.ROOT}/movies"
           }
         }
+        volume {
+          name = "/data/movies"
+          persistent_volume_claim {
+            claim_name = "/data/movies"
+          }
+        }
       }
     }
   }
 }
+
 resource "kubernetes_service" "plex-server" {
   metadata {
     name      = "plex-server"
