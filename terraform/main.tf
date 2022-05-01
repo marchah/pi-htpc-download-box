@@ -37,91 +37,77 @@ resource "kubernetes_pod" "plex-server" {
     name      = "plex-server"
     //namespace = kubernetes_namespace.htpc_namespace.metadata.0.name
   }
+
   spec {
-    replicas = 1
-    selector {
-      match_labels = {
-        app = "plex-server"
+    container {
+      image = "linuxserver/plex:latest"
+      name  = "plex-server"
+      port {
+        container_port = 80
+      }
+
+      env {
+        name = "PUID"
+        value = var.PUID
+      }
+
+      env {
+        name = "PGID"
+        value = var.PGID
+      }
+
+      env {
+        name = "TZ"
+        value = var.TZ
+      }
+
+      env {
+        name = "VERSION"
+        value = "docker"
+      }
+
+      volume_mount {
+        mount_path = "/config"
+        name = "config"
+      }
+
+      volume_mount {
+        mount_path = "/transcode"
+        name = "transcode"
+      }
+
+      volume_mount {
+        mount_path = "/data/tvshows"
+        name = "tvshows"
+      }
+
+      volume_mount {
+        mount_path = "/data/movies"
+        name = "movies"
       }
     }
-    template {
-      metadata {
-        labels = {
-          app = "plex-server"
-        }
+    volume {
+      name = "config"
+      host_path {
+        path = "${var.CONFIG}/config/plex/db"
       }
-      spec {
-        container {
-          image = "linuxserver/plex:latest"
-          name  = "plex-server"
-          port {
-            container_port = 80
-          }
-
-          env {
-            name = "PUID"
-            value = var.PUID
-          }
-
-          env {
-            name = "PGID"
-            value = var.PGID
-          }
-
-          env {
-            name = "TZ"
-            value = var.TZ
-          }
-
-          env {
-            name = "VERSION"
-            value = "docker"
-          }
-
-          volume_mount {
-            mount_path = "/config"
-            name = "config"
-          }
-
-          volume_mount {
-            mount_path = "/transcode"
-            name = "transcode"
-          }
-
-          volume_mount {
-            mount_path = "/data/tvshows"
-            name = "tvshows"
-          }
-
-          volume_mount {
-            mount_path = "/data/movies"
-            name = "movies"
-          }
-        }
-        volume {
-          name = "config"
-          host_path {
-            path = "${var.CONFIG}/config/plex/db"
-          }
-        }
-        volume {
-          name = "transcode"
-          host_path {
-            path = "${var.CONFIG}/config/plex/transcode"
-          }
-        }
-        volume {
-          name = "tvshows"
-          host_path {
-            path = "${var.ROOT}/tv"
-          }
-        }
-        volume {
-          name = "movies"
-          host_path {
-            path = "${var.ROOT}/movies"
-          }
-        }
+    }
+    volume {
+      name = "transcode"
+      host_path {
+        path = "${var.CONFIG}/config/plex/transcode"
+      }
+    }
+    volume {
+      name = "tvshows"
+      host_path {
+        path = "${var.ROOT}/tv"
+      }
+    }
+    volume {
+      name = "movies"
+      host_path {
+        path = "${var.ROOT}/movies"
       }
     }
   }
