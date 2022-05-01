@@ -77,12 +77,12 @@ resource "kubernetes_deployment" "plex-server" {
 
           volume_mount {
             mount_path = "/config"
-            name = "${var.CONFIG}/config/plex/db"
+            name = "config"
           }
 
           volume_mount {
             mount_path = "/transcode"
-            name = "${var.CONFIG}/config/plex/transcode"
+            name = "transcode"
           }
 
           volume_mount {
@@ -93,6 +93,18 @@ resource "kubernetes_deployment" "plex-server" {
           volume_mount {
             mount_path = "/data/movies"
             name = "movies"
+          }
+        }
+        volume {
+          name = "config"
+          host_path {
+            path = "${var.CONFIG}/config/plex/db"
+          }
+        }
+        volume {
+          name = "transcode"
+          host_path {
+            path = "${var.CONFIG}/config/plex/transcode"
           }
         }
         volume {
