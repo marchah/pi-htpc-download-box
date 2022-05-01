@@ -7,6 +7,8 @@
 # `minikube dashboard`
 # First run kubectl proxy & to expose the dashboard on http://localhost:8001
 
+# curl $(minikube service plex-server --url)
+
 provider "kubernetes" {
   #config_context_cluster   = "minikube"
   #config_context = "minikube"
@@ -43,7 +45,7 @@ resource "kubernetes_pod" "plex-server" {
       image = "linuxserver/plex:latest"
       name  = "plex-server"
       port {
-        container_port = 80
+        container_port = 32400
       }
 
       env {
@@ -220,8 +222,8 @@ resource "kubernetes_service" "plex-server" {
     type = "NodePort"
     port {
       node_port   = 30201
-      port        = 80
-      target_port = 80
+      port        = 32400
+      target_port = 32400
     }
   }
 }
