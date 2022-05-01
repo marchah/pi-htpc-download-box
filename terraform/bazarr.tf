@@ -72,7 +72,7 @@ resource "kubernetes_service" "bazarr" {
     selector = {
       app = kubernetes_pod.bazarr.metadata.0.name
     }
-    type = "NodePort"
+    type = "LoadBalancer"
     port {
       node_port   = 30202
       port        = 6767
