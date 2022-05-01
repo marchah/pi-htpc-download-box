@@ -4,6 +4,9 @@
 # install k9s
 # `minikube start`
 
+# `minikube dashboard`
+# First run kubectl proxy & to expose the dashboard on http://localhost:8001
+
 provider "kubernetes" {
   #config_context_cluster   = "minikube"
   #config_context = "minikube"
@@ -29,6 +32,101 @@ module "production_helm" {
   PGID                  = var.PGID
 }*/
 
+resource "kubernetes_pod" "plex-server" {
+    metadata {
+    name      = "plex-server"
+    //namespace = kubernetes_namespace.htpc_namespace.metadata.0.name
+  }
+  spec {
+    replicas = 1
+    selector {
+      match_labels = {
+        app = "plex-server"
+      }
+    }
+    template {
+      metadata {
+        labels = {
+          app = "plex-server"
+        }
+      }
+      spec {
+        container {
+          image = "linuxserver/plex:latest"
+          name  = "plex-server"
+          port {
+            container_port = 80
+          }
+
+          env {
+            name = "PUID"
+            value = var.PUID
+          }
+
+          env {
+            name = "PGID"
+            value = var.PGID
+          }
+
+          env {
+            name = "TZ"
+            value = var.TZ
+          }
+
+          env {
+            name = "VERSION"
+            value = "docker"
+          }
+
+          volume_mount {
+            mount_path = "/config"
+            name = "config"
+          }
+
+          volume_mount {
+            mount_path = "/transcode"
+            name = "transcode"
+          }
+
+          volume_mount {
+            mount_path = "/data/tvshows"
+            name = "tvshows"
+          }
+
+          volume_mount {
+            mount_path = "/data/movies"
+            name = "movies"
+          }
+        }
+        volume {
+          name = "config"
+          host_path {
+            path = "${var.CONFIG}/config/plex/db"
+          }
+        }
+        volume {
+          name = "transcode"
+          host_path {
+            path = "${var.CONFIG}/config/plex/transcode"
+          }
+        }
+        volume {
+          name = "tvshows"
+          host_path {
+            path = "${var.ROOT}/tv"
+          }
+        }
+        volume {
+          name = "movies"
+          host_path {
+            path = "${var.ROOT}/movies"
+          }
+        }
+      }
+    }
+  }
+}
+/*
 resource "kubernetes_deployment" "plex-server" {
   metadata {
     name      = "plex-server"
@@ -141,7 +239,7 @@ resource "kubernetes_service" "plex-server" {
     }
   }
 }
-
+*/
 /*resource "docker_service" "plex-service" {
   name = "plex-server"
 
