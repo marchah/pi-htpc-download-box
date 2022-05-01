@@ -87,18 +87,24 @@ resource "kubernetes_deployment" "plex-server" {
 
           volume_mount {
             mount_path = "/data/tvshows"
-            name = "${var.ROOT}/tv"
+            name = "tvshows"
           }
 
           volume_mount {
             mount_path = "/data/movies"
-            name = "${var.ROOT}/movies"
+            name = "movies"
           }
         }
         volume {
-          name = "/data/movies"
-          persistent_volume_claim {
-            claim_name = "/data/movies"
+          name = "tvshows"
+          host_path {
+            path = "${var.ROOT}/tv"
+          }
+        }
+        volume {
+          name = "movies"
+          host_path {
+            path = "${var.ROOT}/movies"
           }
         }
       }
