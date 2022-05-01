@@ -207,7 +207,7 @@ resource "kubernetes_deployment" "plex-server" {
     }
   }
 }
-
+*/
 resource "kubernetes_service" "plex-server" {
   metadata {
     name      = "plex-server"
@@ -215,7 +215,7 @@ resource "kubernetes_service" "plex-server" {
   }
   spec {
     selector = {
-      app = kubernetes_deployment.plex-server.spec.0.template.0.metadata.0.labels.app
+      app = kubernetes_pod.plex-server.metadata.0.labels.app
     }
     type = "NodePort"
     port {
@@ -225,7 +225,7 @@ resource "kubernetes_service" "plex-server" {
     }
   }
 }
-*/
+
 /*resource "docker_service" "plex-service" {
   name = "plex-server"
 
