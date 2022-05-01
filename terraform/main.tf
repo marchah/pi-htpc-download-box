@@ -109,7 +109,7 @@ resource "kubernetes_deployment" "plex-server" {
 resource "kubernetes_service" "plex-server" {
   metadata {
     name      = "plex-server"
-    namespace = kubernetes_namespace.htpc_namespace.metadata.0.name
+    //namespace = kubernetes_namespace.htpc_namespace.metadata.0.name
   }
   spec {
     selector = {
