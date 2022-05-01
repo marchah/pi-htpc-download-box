@@ -54,7 +54,7 @@ resource "kubernetes_deployment" "plex-server" {
           port {
             container_port = 80
           }
-          
+
           env {
             name = "PUID"
             value = var.PUID
@@ -76,23 +76,23 @@ resource "kubernetes_deployment" "plex-server" {
           }
 
           volume_mount {
-            name = "/config"
-            mount_path = "${var.CONFIG}/config/plex/db"
+            mount_path = "/config"
+            name = "${var.CONFIG}/config/plex/db"
           }
 
           volume_mount {
-            name = "/transcode"
-            mount_path = "${var.CONFIG}/config/plex/transcode"
+            mount_path = "/transcode"
+            name = "${var.CONFIG}/config/plex/transcode"
           }
 
           volume_mount {
-            name = "/data/tvshows"
-            mount_path = "${var.ROOT}/tv"
+            mount_path = "/data/tvshows"
+            name = "${var.ROOT}/tv"
           }
 
           volume_mount {
-            name = "/data/movies"
-            mount_path = "${var.ROOT}/movies"
+            mount_path = "/data/movies"
+            name = "${var.ROOT}/movies"
           }
         }
       }
