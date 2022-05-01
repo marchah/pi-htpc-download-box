@@ -75,8 +75,8 @@ resource "kubernetes_service" "bazarr" {
     type = "NodePort"
     port {
       node_port   = 30202
-      port        = 32400
-      target_port = 32400
+      port        = 6767
+      target_port = 6767
     }
   }
 }
