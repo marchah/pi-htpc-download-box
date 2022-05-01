@@ -215,7 +215,7 @@ resource "kubernetes_service" "plex-server" {
   }
   spec {
     selector = {
-      app = kubernetes_pod.plex-server.metadata.0.labels.app
+      app = kubernetes_pod.plex-server.metadata.0.name
     }
     type = "NodePort"
     port {
