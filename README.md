@@ -110,6 +110,7 @@ Default ssh username/password is `pirate/hypriot`.
 
 ```
 sudo apt-get update
+sudo apt-get upgrade
 sudo apt-get install nfs-common
 ```
 
