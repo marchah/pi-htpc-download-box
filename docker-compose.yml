@@ -1,5 +1,15 @@
 version: "3.4"
 services:
+  yacht:
+    container_name: yacht
+    image: selfhostedpro/yacht:latest
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+    volumes:
+      - ${CONFIG}/config/yacht:/config
+      - /var/run/docker.sock:/var/run/docker.sock
+      
   node_exporter:
     container_name: node_exporter
     image: quay.io/prometheus/node-exporter:latest
