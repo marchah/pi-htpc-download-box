@@ -137,7 +137,7 @@ ROOT=/media
 # The directory where configuration will be stored.
 CONFIG=/config
 #NordVPN informations
-VPN_USER=usero@email.com
+VPN_USER=user@email.com
 VPN_PASSWORD=password
 VPN_COUNTRY=CA
 ```
@@ -177,13 +177,13 @@ We'll use [Yacht](https://yacht.sh/) Docker image to monitor the other container
 ```yaml
 yacht:
   container_name: yacht
+  image: selfhostedpro/yacht:latest
   restart: unless-stopped
   ports:
     - 8000:8000
   volumes:
     - ${CONFIG}/config/yacht:/config
     - /var/run/docker.sock:/var/run/docker.sock
-  image: selfhostedpro/yacht
 
 volumes:
   yacht:
