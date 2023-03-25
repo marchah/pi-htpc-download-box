@@ -101,6 +101,20 @@ services:
       - ${ROOT}/downloads:/downloads # downloads folder
       - ${CONFIG}/deluge:/config # config files
 
+  flaresolverr:
+    container_name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ} # timezone, defined in .env
+    ports:
+      - "${PORT:-8191}:8191"
+    
+
   jackett:
     container_name: jackett
     image: linuxserver/jackett:latest
