@@ -160,7 +160,7 @@ services:
 
   prowlarr:
     container_name: prowlarr
-    image: linuxserver/prowlarr:nightly
+    image: linuxserver/prowlarr:latest
     restart: unless-stopped
     network_mode: host
     environment:
