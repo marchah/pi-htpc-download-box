@@ -1,0 +1,30 @@
+version: "3.4"
+services:
+  jackett:
+    container_name: jackett
+    image: linuxserver/jackett:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${SHARED}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
+      - ${CONFIG}/jackett:/config # config files
+
+  prowlarr:
+    container_name: prowlarr
+    image: linuxserver/prowlarr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - UMASK=002
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+       - ${CONFIG}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
+      - ${CONFIG}/prowlarr:/config # config files
