@@ -28,3 +28,16 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${CONFIG}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
       - ${CONFIG}/prowlarr:/config # config files
+  
+  flaresolverr:
+    container_name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ} # timezone, defined in .env
+    ports:
+      - "${PORT:-8191}:8191"
