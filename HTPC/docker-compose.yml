@@ -1,5 +1,40 @@
 version: "3.4"
 services:
+  openvpn:
+    container_name: openvpn
+    image: dperson/openvpn-client:latest
+    cap_add:
+      - NET_ADMIN # required to modify network interfaces
+    restart: unless-stopped
+    environment:
+      - VPN_AUTH=${OPENVPN_AUTH}
+      - DNS=${DNS}
+    volumes:
+      - /dev/net:/dev/net:z # tun device
+      - ${CONFIG}/vpn:/vpn # OpenVPN configuration
+    security_opt:
+      - label:disable
+    ports:
+      - 9091:9091 # Transmission web UI
+      - 51413:51413 # Transmission bittorrent daemon
+      - 51413:51413/udp # Transmission bittorrent daemon
+      - 8112:8112 # port for deluge web UI to be reachable from local network
+      - 5800:3000 # port for firefox
+    command: '-f "" -r 192.168.1.0/24' # enable firewall and route local network traffic
+  
+  transmission:
+    image: linuxserver/transmission:latest
+    container_name: transmission
+    restart: unless-stopped
+    network_mode: service:openvpn # run on the vpn network
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - ${SHARED}/downloads:/downloads # downloads folder
+      - ${CONFIG}/transmission:/config # config files
+
   jackett:
     container_name: jackett
     image: linuxserver/jackett:latest
