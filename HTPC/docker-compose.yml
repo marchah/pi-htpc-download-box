@@ -102,7 +102,6 @@ services:
       - PGID=${PGID} # default group id, defined in .env
       - TZ=${TZ} # timezone, defined in .env
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${CONFIG}/sonarr:/config # config files
       - ${SHARED}/tv:/tv # tv shows folder
       - ${SHARED}/downloads:/downloads # download folder
