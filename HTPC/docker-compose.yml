@@ -76,3 +76,18 @@ services:
       - TZ=${TZ} # timezone, defined in .env
     ports:
       - "${PORT:-8191}:8191"
+  
+  radarr:
+    container_name: radarr
+    image: linuxserver/radarr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${CONFIG}/radarr:/config # config files
+      - ${SHARED}/movies:/movies # movies folder
+      - ${SHARED}/downloads:/downloads # download folder

@@ -65,21 +65,6 @@ services:
       - ${ROOT}/tv:/tv # tv shows folder
       - ${ROOT}/downloads:/downloads # download folder
 
-  radarr:
-    container_name: radarr
-    image: linuxserver/radarr:latest
-    restart: unless-stopped
-    network_mode: host
-    environment:
-      - PUID=${PUID} # default user id, defined in .env
-      - PGID=${PGID} # default group id, defined in .env
-      - TZ=${TZ} # timezone, defined in .env
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${CONFIG}/radarr:/config # config files
-      - ${ROOT}/movies:/movies # movies folder
-      - ${ROOT}/downloads:/downloads # download folder
-
   bazarr:
     container_name: bazarr
     image: linuxserver/bazarr:latest
