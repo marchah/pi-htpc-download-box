@@ -91,3 +91,18 @@ services:
       - ${CONFIG}/radarr:/config # config files
       - ${SHARED}/movies:/movies # movies folder
       - ${SHARED}/downloads:/downloads # download folder
+
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${CONFIG}/sonarr:/config # config files
+      - ${SHARED}/tv:/tv # tv shows folder
+      - ${SHARED}/downloads:/downloads # download folder

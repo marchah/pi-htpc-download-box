@@ -50,21 +50,6 @@ services:
       - ${ROOT}/downloads:/downloads # downloads folder
       - ${CONFIG}/deluge:/config # config files
 
-  sonarr:
-    container_name: sonarr
-    image: linuxserver/sonarr:latest
-    restart: unless-stopped
-    network_mode: host
-    environment:
-      - PUID=${PUID} # default user id, defined in .env
-      - PGID=${PGID} # default group id, defined in .env
-      - TZ=${TZ} # timezone, defined in .env
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${CONFIG}/sonarr:/config # config files
-      - ${ROOT}/tv:/tv # tv shows folder
-      - ${ROOT}/downloads:/downloads # download folder
-
   bazarr:
     container_name: bazarr
     image: linuxserver/bazarr:latest
