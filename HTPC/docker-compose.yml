@@ -102,6 +102,22 @@ services:
       - PGID=${PGID} # default group id, defined in .env
       - TZ=${TZ} # timezone, defined in .env
     volumes:
+      # - /etc/localtime:/etc/localtime:ro
       - ${CONFIG}/sonarr:/config # config files
       - ${SHARED}/tv:/tv # tv shows folder
       - ${SHARED}/downloads:/downloads # download folder
+
+  bazarr:
+    container_name: bazarr
+    image: linuxserver/bazarr:latest
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - ${CONFIG}/bazarr:/config # config files
+      - ${SHARED}/movies:/movies # movies folder, same as Radarr
+      - ${SHARED}/tv:/tv # tv shows folder, same as Sonarr
+    ports:
+      - 6767:6767

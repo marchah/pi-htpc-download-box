@@ -50,21 +50,6 @@ services:
       - ${ROOT}/downloads:/downloads # downloads folder
       - ${CONFIG}/deluge:/config # config files
 
-  bazarr:
-    container_name: bazarr
-    image: linuxserver/bazarr:latest
-    restart: unless-stopped
-    environment:
-      - PUID=${PUID} # default user id, defined in .env
-      - PGID=${PGID} # default group id, defined in .env
-      - TZ=${TZ} # timezone, defined in .env
-    volumes:
-      - ${CONFIG}/bazarr:/config # config files
-      - ${ROOT}/movies:/movies # movies folder, same as Radarr
-      - ${ROOT}/tv:/tv # tv shows folder, same as Sonarr
-    ports:
-      - 6767:6767
-
   plex-server:
     container_name: plex-server
     image: linuxserver/plex:latest
