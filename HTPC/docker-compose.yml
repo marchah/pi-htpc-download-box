@@ -49,8 +49,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${SHARED}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
       - ${CONFIG}/jackett:/config # config files
-    ports:
-      - 9117:9117
 
   prowlarr:
     container_name: prowlarr
@@ -66,8 +64,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${CONFIG}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
       - ${CONFIG}/prowlarr:/config # config files
-    ports:
-      - 9696:9696
   
   flaresolverr:
     container_name: flaresolverr
@@ -96,8 +92,6 @@ services:
       - ${CONFIG}/radarr:/config # config files
       - ${SHARED}/movies:/movies # movies folder
       - ${SHARED}/downloads:/downloads # download folder
-    ports:
-      - 7878:7878
 
   sonarr:
     container_name: sonarr
@@ -113,8 +107,6 @@ services:
       - ${CONFIG}/sonarr:/config # config files
       - ${SHARED}/tv:/tv # tv shows folder
       - ${SHARED}/downloads:/downloads # download folder
-    ports:
-      - 8989:8989
 
   bazarr:
     container_name: bazarr
@@ -128,5 +120,3 @@ services:
       - ${CONFIG}/bazarr:/config # config files
       - ${SHARED}/movies:/movies # movies folder, same as Radarr
       - ${SHARED}/tv:/tv # tv shows folder, same as Sonarr
-    ports:
-      - 6767:6767

@@ -13,8 +13,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${CONFIG}/home-assistant:/config # config files
     privileged: true
-    ports:
-      - 8123:8123 # Home Assistant web UI
 
   esphome:
     container_name: esphome
@@ -26,8 +24,6 @@ services:
       - PGID=${PGID} # default group id, defined in .env
       - TZ=${TZ} # timezone, defined in .env
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      # - /etc/localtime:/etc/localtime:ro
       - ${CONFIG}/esphome:/config # config files
     privileged: true
-    ports:
-      - 6052:6052 # ESPHome web UI
