@@ -109,7 +109,7 @@ networks:
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
-      
+
 volumes:
   portainer_data:
 ```
