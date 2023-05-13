@@ -33,5 +33,3 @@ services:
     volumes:
       - ${SHARED}/downloads:/downloads # downloads folder
       - ${CONFIG}/transmission:/config # config files
-    ports:
-      - 9091:9091
