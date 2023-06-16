@@ -122,9 +122,8 @@ sensor:
     compensation:
       temperature_source: temp
       humidity_source: humidity
-
 # Provide a /metrics endpoint for Prometheus
-prometheus:
-web_server:
-  port: ${web_server_port}
-  version: 1
+#prometheus:
+#web_server:
+#  port: ${web_server_port}
+#  version: 1
