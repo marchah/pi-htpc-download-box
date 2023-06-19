@@ -122,7 +122,7 @@ services:
     image: containrrr/watchtower:latest
     restart: unless-stopped
     environment:
-      - WATCHTOWER_SCHEDULE=0 0 3 * * *
+      - WATCHTOWER_SCHEDULE=0 0 10 * * *
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_NOTIFICATIONS=slack
       - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=${WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL}
