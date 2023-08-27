@@ -28,6 +28,27 @@ services:
       - ${CONFIG}/esphome:/config # config files
     privileged: true
 
+  wyze-bridge:
+    container_name: wyze-bridge
+    restart: unless-stopped
+    image: mrlt8/wyze-bridge:latest
+    ports:
+        - 1935:1935 # RTMP
+        - 8554:8554 # RTSP
+        - 8888:8888 # HLS
+        - 8889:8889 #WebRTC
+        - 8189:8189/udp # WebRTC/ICE
+        - 5000:5000 # WEB-UI
+    environment:
+        - NET_MODE=
+        - WYZE_EMAIL=${WYZE_EMAIL}
+        - WYZE_PASSWORD=${WYZE_PASSWORD}
+        # [OPTIONAL] IP Address of the host to enable WebRTC e.g.,:
+        # - WB_IP=192.168.1.122
+        # [OPTIONAL] Wyze API credentials:
+        # - API_ID=
+        # - API_KEY= 
+
   watchtower:
     container_name: watchtower
     image: containrrr/watchtower:latest
