@@ -40,9 +40,10 @@ services:
         - 8189:8189/udp # WebRTC/ICE
         - 5000:5000 # WEB-UI
     environment:
-        - NET_MODE=
+        - NET_MODE=${WYZE_NET_MODE}
         - WYZE_EMAIL=${WYZE_EMAIL}
         - WYZE_PASSWORD=${WYZE_PASSWORD}
+        - SNAPSHOT=${WYZE_SNAPSHOT_MODE}
         # [OPTIONAL] IP Address of the host to enable WebRTC e.g.,:
         # - WB_IP=192.168.1.122
         # [OPTIONAL] Wyze API credentials:
