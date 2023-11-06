@@ -392,9 +392,13 @@ Uncomment container instructions in `docker.compose.yml`
 
 [See original instructions](https://github.com/sebgl/htpc-download-box#setup-sonarr)
 
+- Settings => Media Management => Import Extra Files
+
 ### Setup Radarr
 
 [See original instructions](https://github.com/sebgl/htpc-download-box#setup-radarr)
+
+- Settings => Media Management => Import Extra Files
 
 ### Setup Bazarr
 

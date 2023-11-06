@@ -113,3 +113,13 @@ networks:
 volumes:
   portainer_data:
 ```
+
+## TODO
+
+- Does the wyze camera require encoding for frigate ? h264?
+- Is ffmpeg install is required ?
+- remove trigger for not moving cars cars
+- setup notifications
+- front_yard: Recording retention is configured for active_objects and event retention is configured for motion. The more restrictive retention policy will be applied.
+- 2 way mic
+- camera alarm
