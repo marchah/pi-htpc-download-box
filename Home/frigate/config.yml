@@ -12,21 +12,38 @@ go2rtc:
       - rtsp://192.168.31.63:8553/front-yard-cam
       - "ffmpeg:front_yard#video=h264#audio=aac"
 
+#detectors:
+#  cpu1:
+#    type: cpu
+#    num_threads: 1
+
 detectors:
-  cpu1:
-    type: cpu
-    num_threads: 1
+  coral:
+    type: edgetpu
+    device: pci:0
+
+#snapshots:
+#  enabled: True
+#  bounding_box: True
 
 record:
   enabled: True
   retain:
     days: 1
     mode: active_objects
+#  events:
+#    retain:
+#      default: 3
+#      mode: active_objects
+
+#ffmpeg:
+#  hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuv420p
 
 objects:
   track:
     - person
     - dog
+    - cat
     - bicycle
     - car
     - motorcycle
