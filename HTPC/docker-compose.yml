@@ -20,7 +20,7 @@ services:
       - 51413:51413/udp # Transmission bittorrent daemon
       - 8112:8112 # port for deluge web UI to be reachable from local network
     command: '-f "" -r 192.168.1.0/24' # enable firewall and route local network traffic
-  
+
   transmission:
     image: linuxserver/transmission:latest
     container_name: transmission
@@ -62,7 +62,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${CONFIG}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
       - ${CONFIG}/prowlarr:/config # config files
-  
+
   flaresolverr:
     container_name: flaresolverr
     image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -73,7 +73,7 @@ services:
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=${TZ} # timezone, defined in .env
-  
+
   radarr:
     container_name: radarr
     image: linuxserver/radarr:latest
@@ -108,8 +108,8 @@ services:
     container_name: bazarr
     image: linuxserver/bazarr:latest
     restart: unless-stopped
-    environment:
     network_mode: host
+    environment:
       - PUID=${PUID} # default user id, defined in .env
       - PGID=${PGID} # default group id, defined in .env
       - TZ=${TZ} # timezone, defined in .env
