@@ -28,7 +28,7 @@ services:
     network_mode: service:openvpn # run on the vpn network
     depends_on: # if `openvpn` restart `transmission` should restart too
       openvpn:
-        condition: service_healthy
+        condition: service_started
         restart: true
     environment:
       - PUID=${PUID} # default user id, defined in .env
