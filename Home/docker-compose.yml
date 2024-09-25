@@ -1,5 +1,23 @@
 version: "3.4"
 services:
+  storedown:
+    image: foxusa/storedown
+    restart: unless-stopped
+    ports:
+      - "80:80"
+
+  couchdb:
+    image: couchdb
+    restart: unless-stopped
+    volumes:
+      - ${SHARED}/couchdb:/opt/couchdb/data # Prevents accidentally deleting your database data
+      - ${CONFIG}/couchdb:/opt/couchdb/etc/local.d # Prevents CORS setting from being removed
+    ports:
+      - "5984:5984"
+    environment:
+      - COUCHDB_USER=${COUCHDB_USER}
+      - COUCHDB_PASSWORD=${COUCHDB_PASSWORD}
+
   wyze-bridge:
     container_name: wyze-bridge
     restart: unless-stopped
