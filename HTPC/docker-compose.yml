@@ -26,6 +26,10 @@ services:
     container_name: transmission
     restart: unless-stopped
     network_mode: service:openvpn # run on the vpn network
+    depends_on: # if `openvpn` restart `transmission` should restart too
+      openvpn:
+        condition: service_started
+        restart: true
     environment:
       - PUID=${PUID} # default user id, defined in .env
       - PGID=${PGID} # default group id, defined in .env
