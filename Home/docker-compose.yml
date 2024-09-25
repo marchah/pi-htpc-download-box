@@ -1,12 +1,14 @@
 version: "3.4"
 services:
   storedown:
+    container_name: storedown
     image: foxusa/storedown
     restart: unless-stopped
     ports:
       - "80:80"
 
   couchdb:
+    container_name: couchdb
     image: couchdb
     restart: unless-stopped
     volumes:
@@ -20,8 +22,8 @@ services:
 
   wyze-bridge:
     container_name: wyze-bridge
-    restart: unless-stopped
     image: mrlt8/wyze-bridge:latest
+    restart: unless-stopped
     ports:
       - 1935:1935 # RTMP
       - 8553:8554 # RTSP
@@ -43,8 +45,8 @@ services:
 
   frigate:
     container_name: frigate
-    restart: unless-stopped
     image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
     shm_size: "64mb" # update for your cameras based on calculation https://docs.frigate.video/frigate/installation#calculating-required-shm-size
     devices:
       #  - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
