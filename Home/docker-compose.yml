@@ -1,33 +1,5 @@
 version: "3.4"
 services:
-  home-assistant:
-    container_name: home-assistant
-    image: ghcr.io/home-assistant/home-assistant:stable
-    restart: unless-stopped
-    network_mode: host
-    environment:
-      - PUID=${PUID} # default user id, defined in .env
-      - PGID=${PGID} # default group id, defined in .env
-      - TZ=${TZ} # timezone, defined in .env
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${CONFIG}/home-assistant:/config # config files
-    privileged: true
-
-  esphome:
-    container_name: esphome
-    image: ghcr.io/esphome/esphome:stable
-    restart: unless-stopped
-    network_mode: host
-    environment:
-      - PUID=${PUID} # default user id, defined in .env
-      - PGID=${PGID} # default group id, defined in .env
-      - TZ=${TZ} # timezone, defined in .env
-    volumes:
-      # - /etc/localtime:/etc/localtime:ro
-      - ${CONFIG}/esphome:/config # config files
-    privileged: true
-
   wyze-bridge:
     container_name: wyze-bridge
     restart: unless-stopped
