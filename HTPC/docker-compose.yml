@@ -1,0 +1,136 @@
+version: "3.4"
+services:
+  openvpn:
+    container_name: openvpn
+    image: dperson/openvpn-client:latest
+    cap_add:
+      - NET_ADMIN # required to modify network interfaces
+    restart: unless-stopped
+    environment:
+      - VPN_AUTH=${OPENVPN_AUTH}
+      - DNS=${DNS}
+    volumes:
+      - /dev/net:/dev/net:z # tun device
+      - ${CONFIG}/vpn:/vpn # OpenVPN configuration
+    security_opt:
+      - label:disable
+    ports:
+      - 9091:9091 # Transmission web UI
+      - 51413:51413 # Transmission bittorrent daemon
+      - 51413:51413/udp # Transmission bittorrent daemon
+      - 8112:8112 # port for deluge web UI to be reachable from local network
+    command: '-f "" -r 192.168.1.0/24' # enable firewall and route local network traffic
+
+  transmission:
+    image: linuxserver/transmission:latest
+    container_name: transmission
+    restart: unless-stopped
+    network_mode: service:openvpn # run on the vpn network
+    depends_on: # if `openvpn` restart `transmission` should restart too
+      openvpn:
+        condition: service_started
+        restart: true
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - ${SHARED}/downloads:/downloads # downloads folder
+      - ${CONFIG}/transmission:/config # config files
+
+  jackett:
+    container_name: jackett
+    image: linuxserver/jackett:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${SHARED}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
+      - ${CONFIG}/jackett:/config # config files
+
+  prowlarr:
+    container_name: prowlarr
+    image: linuxserver/prowlarr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - UMASK=002
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${CONFIG}/downloads/torrent-blackhole:/downloads # place where to put .torrent files for manual download
+      - ${CONFIG}/prowlarr:/config # config files
+
+  flaresolverr:
+    container_name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=${TZ} # timezone, defined in .env
+
+  radarr:
+    container_name: radarr
+    image: linuxserver/radarr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${CONFIG}/radarr:/config # config files
+      - ${SHARED}/movies:/movies # movies folder
+      - ${SHARED}/downloads:/downloads # download folder
+
+  sonarr:
+    container_name: sonarr
+    image: linuxserver/sonarr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      # - /etc/localtime:/etc/localtime:ro
+      - ${CONFIG}/sonarr:/config # config files
+      - ${SHARED}/tv:/tv # tv shows folder
+      - ${SHARED}/downloads:/downloads # download folder
+
+  bazarr:
+    container_name: bazarr
+    image: linuxserver/bazarr:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - PUID=${PUID} # default user id, defined in .env
+      - PGID=${PGID} # default group id, defined in .env
+      - TZ=${TZ} # timezone, defined in .env
+    volumes:
+      - ${CONFIG}/bazarr:/config # config files
+      - ${SHARED}/movies:/movies # movies folder, same as Radarr
+      - ${SHARED}/tv:/tv # tv shows folder, same as Sonarr
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    restart: unless-stopped
+    environment:
+      - WATCHTOWER_SCHEDULE=0 0 10 * * *
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_NOTIFICATIONS=slack
+      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=${WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock

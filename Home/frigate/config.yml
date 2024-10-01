@@ -1,0 +1,68 @@
+mqtt:
+  enabled: false
+
+#ffmpeg:
+#  hwaccel_args: preset-vaapi
+#  output_args:
+#   record: preset-record-generic-audio-aac
+
+go2rtc:
+  streams:
+    front_yard:
+      - rtsp://192.168.31.63:8553/front-yard-cam
+      - "ffmpeg:front_yard#video=h264#audio=aac"
+
+#detectors:
+#  cpu1:
+#    type: cpu
+#    num_threads: 1
+
+detectors:
+  coral:
+    type: edgetpu
+    device: pci:0
+
+#snapshots:
+#  enabled: True
+#  bounding_box: True
+
+record:
+  enabled: True
+  retain:
+    days: 1
+    mode: active_objects
+#  events:
+#    retain:
+#      default: 3
+#      mode: active_objects
+
+#ffmpeg:
+#  hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuv420p
+
+objects:
+  track:
+    - person
+    - dog
+    - cat
+    - bicycle
+    - car
+    - motorcycle
+
+cameras:
+  front_yard:
+    ffmpeg:
+      output_args:
+        record: preset-record-generic-audio-copy
+      inputs:
+        - path: rtsp://127.0.0.1:8554/front_yard
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+            - record
+    detect:
+      width: 1920
+      height: 1080
+      fps: 5
+#
+# https://github.com/blakeblackshear/frigate/discussions/6962
+# https://docs.frigate.video/configuration/#full-configuration-reference

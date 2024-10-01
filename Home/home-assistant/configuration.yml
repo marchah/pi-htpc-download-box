@@ -1,0 +1,27 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+/**
+This stops working in version 2024.10.0. Please address before upgrading.
+Configuring iframe Panel using YAML is being removed.
+
+Your existing YAML configuration has been imported into the UI automatically as a regular dashboard.
+
+Remove the panel_iframe configuration from your configuration.yaml file and restart Home Assistant to fix this issue.
+**/
+panel_iframe:
+  esphome:
+    title: "ESPHome"
+    icon: mdi:chip
+    url: http://192.168.31.63:6052
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml

@@ -1,0 +1,114 @@
+- id: "1693097348663"
+  alias: Decorations Turn On
+  description: ""
+  trigger:
+    - platform: sun
+      event: sunset
+      offset: 00:10:00
+  condition: []
+  action:
+    - type: turn_on
+      device_id: cfbc24b448b9242a715a3e516259cea9
+      entity_id: d2b054bc4536cb6873fe784f5eef31ed
+      domain: switch
+    - type: turn_on
+      device_id: 8e26129012e6c6614d46f9e9b9ac01ba
+      entity_id: e3765e1db8e2d9116fea8a4f4cb7cfd2
+      domain: switch
+  mode: single
+- id: "1693097555638"
+  alias: Decorations Turn Off Weekdays
+  description: ""
+  trigger:
+    - platform: time
+      at: "22:30:00"
+  condition:
+    - condition: time
+      weekday:
+        - mon
+        - tue
+        - wed
+        - thu
+        - sun
+  action:
+    - type: turn_off
+      device_id: cfbc24b448b9242a715a3e516259cea9
+      entity_id: d2b054bc4536cb6873fe784f5eef31ed
+      domain: switch
+    - type: turn_off
+      device_id: 8e26129012e6c6614d46f9e9b9ac01ba
+      entity_id: e3765e1db8e2d9116fea8a4f4cb7cfd2
+      domain: switch
+  mode: single
+- id: "1693097682534"
+  alias: Decorations Turn Off Weekends
+  description: ""
+  trigger:
+    - platform: time
+      at: "22:30:00"
+  condition:
+    - condition: time
+      weekday:
+        - fri
+        - sat
+  action:
+    - type: turn_off
+      device_id: cfbc24b448b9242a715a3e516259cea9
+      entity_id: d2b054bc4536cb6873fe784f5eef31ed
+      domain: switch
+    - type: turn_off
+      device_id: 8e26129012e6c6614d46f9e9b9ac01ba
+      entity_id: e3765e1db8e2d9116fea8a4f4cb7cfd2
+      domain: switch
+  mode: single
+- id: "1694466256972"
+  alias: Fragrance Turn On
+  description: ""
+  trigger:
+    - platform: time
+      at: "18:00:00"
+  condition: []
+  action:
+    - type: turn_on
+      device_id: 35a3ab4f9f5a7d94fa938671cdb39106
+      entity_id: 37db417953082df30a38a38c98b580e8
+      domain: switch
+    - type: turn_on
+      device_id: 959c529b0c25c6849bdd8ec38f95a159
+      entity_id: fed8a6bd93fde592ef242a02948ddd18
+      domain: switch
+  mode: single
+- id: "1694466312436"
+  alias: Fragrance Turn Off Weekdays
+  description: ""
+  trigger:
+    - platform: time
+      at: "22:00:00"
+  condition: []
+  action:
+    - type: turn_off
+      device_id: 35a3ab4f9f5a7d94fa938671cdb39106
+      entity_id: 37db417953082df30a38a38c98b580e8
+      domain: switch
+    - type: turn_off
+      device_id: 959c529b0c25c6849bdd8ec38f95a159
+      entity_id: fed8a6bd93fde592ef242a02948ddd18
+      domain: switch
+  mode: single
+- id: "1694466368212"
+  alias: Fragrance Turn Off Weekends
+  description: ""
+  trigger:
+    - platform: time
+      at: "23:00:00"
+  condition: []
+  action:
+    - type: turn_off
+      device_id: 35a3ab4f9f5a7d94fa938671cdb39106
+      entity_id: 37db417953082df30a38a38c98b580e8
+      domain: switch
+    - type: turn_off
+      device_id: 959c529b0c25c6849bdd8ec38f95a159
+      entity_id: fed8a6bd93fde592ef242a02948ddd18
+      domain: switch
+  mode: single
