@@ -1,68 +1,12 @@
-# Pi HTPC Download Box
+# Proxmox Setup
 
-Sonarr / Radarr / Bazarr / Jackett / NZBGet / Transmission / Deluge / NordVPN / Plex
+## Plex LXC
 
-TV shows and movies download, sort, with the desired quality and subtitles, behind a VPN (optional), ready to watch, in a beautiful media player.
-All automated.
+**Media Center**:
 
-## Table of Contents
+- [Plex](https://plex.tv): media center server with streaming transcoding features, useful plugins and a beautiful UI. Clients available for a lot of systems (Linux/OSX/Windows, Web, Android, Chromecast, Android TV, etc.)
 
-- [Pi HTPC Download Box](#htpc-download-box)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-    - [Monitor TV shows/movies with Sonarr and Radarr](#overview)
-    - [Search for releases automatically with Usenet and torrent indexers](#overview)
-    - [Handle bittorrent and usenet downloads with Deluge and NZBGet](#overview)
-    - [Organize libraries and play videos with Plex](#overview)
-  - [Hardware configuration](#hardware-configuration)
-  - [Software stack](#software-stack)
-  - [Installation guide](#installation-guide)
-    - [Introduction](#introduction)
-    - [Hypriot OS](#hypriot-oS)
-    - [Setup NTFS folder](#setup-ntfs-folder)
-      - [Create NTFS folder on NAS](create-ntfs-folder-on-NAS)
-      - [Mount NTFS folder on Pi](mount-ntfs-folder-on-Pi)
-    - [Setup Transmission](#setup-transmission)
-      - [Docker container](#docker-container)
-      - [Configuration](#configuration)
-    - [Setup Deluge](#setup-deluge)
-      - [Docker container](#docker-container)
-      - [Configuration](#configuration)
-    - [Setup a VPN Container](#setup-a-vpn-container)
-      - [Introduction](#introduction)
-      - [Docker container](#docker-container)
-    - [Setup Jackett](#setup-jackett)
-    - [Setup NZBGet](#setup-nzbget)
-    - [Setup Plex](#setup-plex)
-    - [Setup Sonarr](#setup-sonarr)
-    - [Setup Radarr](#setup-radarr)
-    - [Setup Bazarr](#setup-bazarr)
-      - [Remotly Add Movies Using trakt.tv And List](#remotly-add-movies-using-trakttv-and-list)
-    - [Reduce Pi Power Consumption](#reduce-pi-power-consumption)
-      - [Disable HDMI](#disable-hdmi)
-      - [Turn Off LEDs](#turn-off-leds)
-      - [Disable Wifi](#disable-wifi)
-      - [Disable Bluetooth](#disable-bluetooth)
-  - [Manage it all from your mobile](#manage-it-all-from-your-mobile)
-  - [Going Further](#going-further)
-  - [Usefull Commands](#usefull-commands)
-  - [TODO](#todo)
-
-## Overview
-
-[See original instructions](https://github.com/sebgl/htpc-download-box#overview)
-
-## Hardware configuration
-
-I have a Synology DS2013j but it's too old to run sonarr/jackett/radarr/plex properly. The movies and tvshows will be stored in a NTFS folder on my nas, the softwares configurations will be stored in the PI. SQLlite doesn't like to be in a network folder, give a lot of `database locked` errors.
-
-I use a Pi 3B but I have added the instructions for older Pi like the 1B and tested it but wasn't able to make it work.
-
-![Error](img/raspberry_pi_1b_failure.png)
-
-## Software stack
-
-![Architecture Diagram](img/architecture_diagram.png)
+## HTPC LXC
 
 **Downloaders**:
 
@@ -76,15 +20,11 @@ I use a Pi 3B but I have added the instructions for older Pi like the 1B and tes
 
 - [Sonarr](https://sonarr.tv): manage TV show, automatic downloads, sort & rename
 - [Radarr](https://radarr.video): basically the same as Sonarr, but for movies
+- [Bazarr](https://www.bazarr.media): manage TV show and movies subtitles
 
 **VPN**:
 
 - [NordVPN](https://nordvpn.com)
-
-**Media Center**:
-
-- [Plex](https://plex.tv): media center server with streaming transcoding features, useful plugins and a beautiful UI. Clients available for a lot of systems (Linux/OSX/Windows, Web, Android, Chromecast, Android TV, etc.)
-- [Bazarr](https://www.bazarr.media): manage TV show and movies subtitles
 
 ## Installation guide
 
@@ -101,18 +41,6 @@ Optional steps described below that you may wish to skip:
 
 - Using a VPN server for Transmission and/or Deluge incoming/outgoing traffic.
 - Using newsgroups (Usenet): you can skip NZBGet installation and all related Sonarr/Radarr indexers configuration if you wish to use bittorrent only.
-
-### Hypriot OS
-
-I recently switched to [Hypriot OS](https://blog.hypriot.com/), it come with docker preinstall and support all the Pi versions.
-
-Default ssh username/password is `pirate/hypriot`.
-
-```
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install nfs-common
-```
 
 ### Setup environment variables
 
@@ -150,57 +78,9 @@ This is the instructions for a Synology but should be pretty much the same for a
 
 [Instructions](https://www.synology.com/en-global/knowledgebase/DSM/tutorial/File_Sharing/How_to_access_files_on_Synology_NAS_within_the_local_network_NFS)
 
-#### Mount NTFS folder on Pi
+#### Mount NTFS folder to Proxmox server
 
-```
-mkdir /home/pirate/Plex
-```
-
-Add in `/etc/fstab`
-
-```
-<your-nas-ip-address>:/volume1/Plex /home/pirate/Plex nfs rw,hard,intr,rsize=8192,wsize=8192,timeo=14 0 0
-```
-
-Re mount
-
-```
-sudo mount -a
-```
-
-### Setup Yacht
-
-#### Docker container
-
-We'll use [Yacht](https://yacht.sh/) Docker image to monitor the other containers, it's an alternative to [Portainer](https://www.portainer.io/).
-
-```yaml
-yacht:
-  container_name: yacht
-  image: selfhostedpro/yacht:latest
-  restart: unless-stopped
-  ports:
-    - 8000:8000
-  volumes:
-    - ${CONFIG}/config/yacht:/config
-    - /var/run/docker.sock:/var/run/docker.sock
-
-volumes:
-  yacht:
-```
-
-Things to notice:
-
-- I use the host network to simplify configuration. The web ui is located on port `8000` (web UI).
-
-Then run the container with `docker-compose up -d yacht`.
-To follow container logs, run `docker-compose logs -f yacht`.
-
-#### Configuration
-
-You should be able to login on the web UI (`localhost:8000`, replace `localhost` by your machine ip if needed).
-
-The default username is `admin@yacht.local` and password is `pass`.
+TODO
 
 ### Setup Transmission
 
@@ -378,12 +258,6 @@ Get the torrent magnet link there, put it in Transmission and/or Deluge, wait a 
 
 [See original instructions](https://github.com/sebgl/htpc-download-box#setup-jackett)
 
-### Setup NZBGet
-
-Uncomment container instructions in `docker.compose.yml`
-
-[See original instructions](https://github.com/sebgl/htpc-download-box#setup-nzbget)
-
 ### Setup Plex
 
 [See original instructions](https://github.com/sebgl/htpc-download-box#setup-plex)
@@ -407,57 +281,6 @@ Uncomment container instructions in `docker.compose.yml`
 #### Remotly Add Movies Using trakt.tv And List
 
 [Instructions](https://www.reddit.com/r/radarr/comments/aixb2i/how_to_setup_trakttv_for_lists/)
-
-### Reduce Pi Power Consumption
-
-#### Disable HDMI
-
-1. Run `/usr/bin/tvservice -o`
-1. Add `/usr/bin/tvservice -o` in `/etc/rc.local` to disable HDMI on boot
-
-#### Turn Off LEDs
-
-```
-# The line below is used to turn off the power LED
-sudo sh -c 'echo 0 > /sys/class/leds/led1/brightness'
-
-# The line below is used to turn off the action LED
-sudo sh -c 'echo 0 > /sys/class/leds/led0/brightness'
-```
-
-Add the following to the `/boot/config.txt`
-
-```
-# Disable Ethernet LEDs
-dtparam=eth_led0=14
-dtparam=eth_led1=14
-
-# Disable the PWR LED
-dtparam=pwr_led_trigger=none
-dtparam=pwr_led_activelow=off
-
-# Disable the Activity LED
-dtparam=act_led_trigger=none
-dtparam=act_led_activelow=off
-```
-
-#### Disable Wifi
-
-Add the following to the `/boot/config.txt`
-
-```
-# Disable Wifi
-dtoverlay=pi3-disable-wifi
-```
-
-#### Disable Bluetooth
-
-Add the following to the `/boot/config.txt`
-
-```
-# Disable Bluetooth
-dtoverlay=pi3-disable-bt
-```
 
 ## Manage it all from your mobile
 
@@ -486,10 +309,6 @@ df -h
 
 ## TODO
 
-1. When Pi restart the env variables are not set anymore and with the container auto restart it's create issues (downloaded works, did VPN was on?)
 1. Transmission seed config back to default after restart (seem to works now but not for `enable blocklist`)
-1. Investigate why mount NTFS folder not working on startup (HDMI is off)
-1. `Reduce Power Consumption` not working on startup
 1. Transmission put completed download inside `complete/admin/torrent-folder-name`
 1. For `fstab` what's diff with `auto,_netdev,nofaill`
-1. Check why not working on Pi 1B+ (will never do it ...)
