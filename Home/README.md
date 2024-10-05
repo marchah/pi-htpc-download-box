@@ -1,12 +1,14 @@
 # Home LXC
 
-## Install Coral Drivers On Host
+## Configuration
+
+### Install Coral Drivers On Host
 
 https://coral.ai/docs/m2/get-started/#2a-on-linux
 
 https://forum.proxmox.com/threads/install-of-pcie-drivers-for-coral-tpu.95503/
 
-## PCIe Passthrough
+### PCIe Passthrough
 
 - https://www.reddit.com/r/homelab/comments/b5xpua/the_ultimate_beginners_guide_to_gpu_passthrough/
 
@@ -29,7 +31,7 @@ lxc.cgroup2.devices.allow: c 29:0 rwm
 
 - On guest run `ls /dev/apex_0` to see if passthrough successfull
 
-## Host Restart
+### Host Restart
 
 - I add to run those commands then restart the guest when my server lost power
 
@@ -39,3 +41,9 @@ modprobe apex
 ```
 
 Did it fix the issue or something else did ? Not really sure but would be nice to find a way to restart the host and have Frigate work without manual manipulation
+
+## Wyze-Bridge
+
+### Authentication
+
+[See Official Documentation](https://github.com/mrlt8/docker-wyze-bridge/wiki/Authentication)

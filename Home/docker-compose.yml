@@ -21,34 +21,6 @@ services:
       - ENABLE_AUDIO=true
       # [OPTIONAL] IP Address of the host to enable WebRTC e.g.,:
       # - WB_IP=192.168.1.122
-      # [OPTIONAL] Wyze API credentials:
-      # - API_ID=
-      # - API_KEY=
-
-  frigate:
-    container_name: frigate
-    image: ghcr.io/blakeblackshear/frigate:stable
-    restart: unless-stopped
-    shm_size: "64mb" # update for your cameras based on calculation https://docs.frigate.video/frigate/installation#calculating-required-shm-size
-    devices:
-      #  - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
-      - /dev/apex_0:/dev/apex_0 # passes a PCIe Coral, follow driver instructions here https://coral.ai/docs/m2/get-started/#2a-on-linux
-    #  - /dev/dri/renderD128 # for intel hwaccel, needs to be updated for your hardware
-    volumes:
-      - ${CONFIG}/frigate:/config
-      - ${STORAGE_PATH}:/media/frigate
-      - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
-        target: /tmp/cache
-        tmpfs:
-          size: 1000000000
-    ports:
-      - "5000:5000"
-      - "8554:8554" # RTSP feeds
-      - "8555:8555/tcp" # WebRTC over tcp
-      - "8555:8555/udp" # WebRTC over udp
-    #environment:
-    #  FRIGATE_RTSP_PASSWORD: "password"
-    privileged: true
 
   watchtower:
     container_name: watchtower
