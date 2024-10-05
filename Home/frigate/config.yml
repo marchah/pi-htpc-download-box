@@ -62,7 +62,7 @@ cameras:
     detect:
       width: 1920
       height: 1080
-      fps: 5
+      fps: 20
 #
 # https://github.com/blakeblackshear/frigate/discussions/6962
 # https://docs.frigate.video/configuration/#full-configuration-reference
