@@ -1,0 +1,22 @@
+substitutions:
+  devicename: <DEVICE_NAME>
+  friendly_devicename: <FRIENDLY_DEVICE_NAME>
+
+packages:
+  athom.smart-plug-v2: github://athom-tech/athom-configs/athom-smart-plug-v2.yaml
+esphome:
+  name: "${devicename}"
+  friendly_name: "${friendly_devicename}"
+  name_add_mac_suffix: false
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret ha_api_key
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+ota:
+  platform: esphome
