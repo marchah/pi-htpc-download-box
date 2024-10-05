@@ -2,9 +2,33 @@
 
 ## Plex LXC
 
-**Media Center**:
+### Install Script
 
-- [Plex](https://plex.tv): media center server with streaming transcoding features, useful plugins and a beautiful UI. Clients available for a lot of systems (Linux/OSX/Windows, Web, Android, Chromecast, Android TV, etc.)
+```
+bash -c "$(wget -qLO - https://github.com/tteck/Proxmox/raw/main/ct/plex.sh)"
+```
+
+### Proxmox NFS mounting
+
+```
+echo "mp0: /mnt/pve/Synology/,mp=/shared" > /etc/pve/lxc/<LXC_NUMBER>.conf
+```
+
+### Ressources
+
+```
+Memory => 1 Gib
+Swap => 512 Mib
+Cores => 2 (Could probably be reduced to 1)
+Root disk => 8G (Could probably be reduced to 6G)
+
+```
+
+### Options
+
+```
+Unprivileged container => No
+```
 
 ## HTPC LXC
 
