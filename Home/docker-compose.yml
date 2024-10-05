@@ -32,7 +32,7 @@ services:
       - /dev/apex_0:/dev/apex_0 # passes a PCIe Coral, follow driver instructions here https://coral.ai/docs/m2/get-started/#2a-on-linux
     #  - /dev/dri/renderD128 # for intel hwaccel, needs to be updated for your hardware
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      - /etc/localtime/Los_Angeles:/etc/localtime:ro
       - ${CONFIG}/frigate:/config
       - ${STORAGE_PATH}:/media/frigate
       - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
