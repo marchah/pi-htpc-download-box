@@ -15,6 +15,8 @@ services:
       - NET_MODE=${WYZE_NET_MODE}
       - WYZE_EMAIL=${WYZE_EMAIL}
       - WYZE_PASSWORD=${WYZE_PASSWORD}
+      - API_ID=${WYZE_API_ID}
+      - API_KEY=${WYZE_API_KEY}
       - SNAPSHOT=${WYZE_SNAPSHOT_MODE}
       - ENABLE_AUDIO=true
       # [OPTIONAL] IP Address of the host to enable WebRTC e.g.,:
