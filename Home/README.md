@@ -2,6 +2,15 @@
 
 ## Configuration
 
+### Setup Timezone
+
+Run those command in the LXC
+
+```
+apk add tzdata
+ln -s /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+```
+
 ### Install Coral Drivers On Host
 
 https://coral.ai/docs/m2/get-started/#2a-on-linux
