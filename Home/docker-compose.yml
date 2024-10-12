@@ -45,8 +45,8 @@ services:
       - "8555:8555/tcp" # WebRTC over tcp
       - "8555:8555/udp" # WebRTC over udp
     environment:
-      - AMCREST_USERNAME=${AMCREST_USERNAME}
-      - AMCREST_PASSWORD=${AMCREST_PASSWORD}
+      - FRIGATE_AMCREST_USERNAME=${AMCREST_USERNAME}
+      - FRIGATE_AMCREST_PASSWORD=${AMCREST_PASSWORD}
     #  FRIGATE_RTSP_PASSWORD: "password"
     privileged: true
 

@@ -54,7 +54,7 @@ cameras:
       output_args:
         record: preset-record-generic-audio-copy
       inputs:
-        - path: rtsp://{AMCREST_USERNAME}:{AMCREST_PASSWORD}@192.168.31.177:554/cam/realmonitor?channel=1&subtype=1 # input_args: preset-rtsp-restream
+        - path: rtsp://{FRIGATE_AMCREST_USERNAME}:{FRIGATE_AMCREST_USERNAME}@192.168.31.177:554/cam/realmonitor?channel=1&subtype=1 # input_args: preset-rtsp-restream
           roles:
             - detect
             - record
