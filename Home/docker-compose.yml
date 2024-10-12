@@ -44,7 +44,9 @@ services:
       - "8554:8554" # RTSP feeds
       - "8555:8555/tcp" # WebRTC over tcp
       - "8555:8555/udp" # WebRTC over udp
-    #environment:
+    environment:
+      - AMCREST_USERNAME=${AMCREST_USERNAME}
+      - AMCREST_PASSWORD=${AMCREST_PASSWORD}
     #  FRIGATE_RTSP_PASSWORD: "password"
     privileged: true
 
