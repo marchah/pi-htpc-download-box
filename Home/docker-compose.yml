@@ -1,27 +1,4 @@
 services:
-  wyze-bridge:
-    container_name: wyze-bridge
-    image: mrlt8/wyze-bridge:latest
-    restart: unless-stopped
-    ports:
-      - 1935:1935 # RTMP
-      - 8553:8554 # RTSP
-      - 8888:8888 # HLS
-      - 8889:8889 #WebRTC
-      - 8189:8189/udp # WebRTC/ICE
-      - 5050:5000 # WEB-UI
-    environment:
-      - NET_MODE=${WYZE_NET_MODE}
-      - WYZE_EMAIL=${WYZE_EMAIL}
-      - WYZE_PASSWORD=${WYZE_PASSWORD}
-      - API_ID=${WYZE_API_ID}
-      - API_KEY=${WYZE_API_KEY}
-      - SNAPSHOT=${WYZE_SNAPSHOT_MODE}
-      - ENABLE_AUDIO=true
-      - WB_AUTH=false
-      # [OPTIONAL] IP Address of the host to enable WebRTC e.g.,:
-      # - WB_IP=192.168.1.122
-
   frigate:
     container_name: frigate
     image: ghcr.io/blakeblackshear/frigate:stable
@@ -47,7 +24,6 @@ services:
     environment:
       - FRIGATE_AMCREST_USERNAME=${AMCREST_USERNAME}
       - FRIGATE_AMCREST_PASSWORD=${AMCREST_PASSWORD}
-    #  FRIGATE_RTSP_PASSWORD: "password"
     privileged: true
 
   watchtower:

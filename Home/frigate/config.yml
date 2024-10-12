@@ -6,11 +6,14 @@ mqtt:
 #  output_args:
 #   record: preset-record-generic-audio-aac
 
-#go2rtc:
-#  streams:
-#    front_yard:
-#      - rtsp://admin:admin@192.168.31.177:554/cam/realmonitor?channel=1&subtype=1
-#      - "ffmpeg:front_yard#video=h264#audio=aac"
+go2rtc:
+  streams:
+    front_yard_hd:
+      - rtsp://{FRIGATE_AMCREST_USERNAME}:{FRIGATE_AMCREST_USERNAME}@192.168.31.177:554/cam/realmonitor?channel=1&subtype=0
+      - "ffmpeg:front_yard_sd#video=h264#audio=aac"
+    front_yard_sd:
+      - rtsp://{FRIGATE_AMCREST_USERNAME}:{FRIGATE_AMCREST_USERNAME}@192.168.31.177:554/cam/realmonitor?channel=1&subtype=1
+      - "ffmpeg:front_yard_sd#video=h264#audio=aac"
 
 #detectors:
 #  cpu1:
@@ -54,10 +57,16 @@ cameras:
       output_args:
         record: preset-record-generic-audio-copy
       inputs:
-        - path: rtsp://{FRIGATE_AMCREST_USERNAME}:{FRIGATE_AMCREST_USERNAME}@192.168.31.177:554/cam/realmonitor?channel=1&subtype=1 # input_args: preset-rtsp-restream
+        - path: rtsp://127.0.0.1:8554/front_yard_sd
+          input_args: preset-rtsp-generic
           roles:
             - detect
+        - path: rtsp://127.0.0.1:8554/front_yard_hd
+          input_args: preset-rtsp-generic
+          roles:
             - record
+    live:
+      stream_name: front_yard_hd
     detect:
       width: 1920
       height: 1080
