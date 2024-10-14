@@ -1,8 +1,15 @@
 mqtt:
   enabled: false
 
-#ffmpeg:
-#  hwaccel_args: preset-vaapi
+ffmpeg:
+  hwaccel_args:
+    - -hwaccel
+    - vaapi
+    - -hwaccel_device
+    - /dev/dri/renderD128
+    #- -hwaccel_output_format
+    #- yuv420p
+# input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -an
 #  output_args:
 #   record: preset-record-generic-audio-aac
 
@@ -34,28 +41,20 @@ record:
   retain:
     days: 1
     mode: active_objects
-#  events:
-#    retain:
-#      default: 3
-#      mode: active_objects
-
-#ffmpeg:
-#  hwaccel_args: -hwaccel vaapi -hwaccel_device /dev/dri/renderD128 -hwaccel_output_format yuv420p
+  events:
+    retain:
+      default: 3
+      mode: active_objects
 
 objects:
   track:
     - person
     - dog
     - cat
-    - bicycle
-    - car
-    - motorcycle
 
 cameras:
   front_yard:
     ffmpeg:
-      output_args:
-        record: preset-record-generic-audio-copy
       inputs:
         - path: rtsp://127.0.0.1:8554/front_yard_sd
           input_args: preset-rtsp-generic
@@ -65,11 +64,13 @@ cameras:
           input_args: preset-rtsp-generic
           roles:
             - record
+      output_args:
+        record: preset-record-generic-audio-copy
     live:
       stream_name: front_yard_hd
     detect:
-      width: 1920
-      height: 1080
+      width: 640
+      height: 480
       fps: 5
 #
 # https://github.com/blakeblackshear/frigate/discussions/6962
