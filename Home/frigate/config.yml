@@ -22,15 +22,10 @@ go2rtc:
       - rtsp://{FRIGATE_AMCREST_USERNAME}:{FRIGATE_AMCREST_USERNAME}@192.168.31.177:554/cam/realmonitor?channel=1&subtype=1
       - "ffmpeg:front_yard_sd#video=h264#audio=aac"
 
-#detectors:
-#  cpu1:
-#    type: cpu
-#    num_threads: 1
-
-#detectors:
-#  coral:
-#    type: edgetpu
-#    device: pci:0
+detectors:
+  coral:
+    type: edgetpu
+    device: pci
 
 #snapshots:
 #  enabled: True

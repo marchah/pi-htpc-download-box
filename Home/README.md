@@ -55,11 +55,11 @@ lxc.mount.entry: /dev/ttyACM1       dev/ttyACM1       none bind,optional,create=
 
 ### Host Restart
 
-- I add to run those commands then restart the guest when my server lost power
+- I add to run those commands in the host then restart the guest when my server lost power
 
 ```
 modprobe gasket
 modprobe apex
 ```
 
-Did it fix the issue or something else did ? Not really sure but would be nice to find a way to restart the host and have Frigate work without manual manipulation
+TODO: Would be nice to find a way to restart the host and have Frigate work without manual manipulation
